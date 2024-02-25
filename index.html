@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Route and Flora/Fauna between Pier 39 and Pier 38, San Francisco</title>
+    <title>Route and Flora/Fauna in Central Park</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
@@ -20,25 +20,25 @@
     </style>
 </head>
 <body>
-    <h1>Route and Flora/Fauna between Pier 39 and Pier 38, San Francisco</h1>
+    <h1>Route and Flora/Fauna in Central Park</h1>
     <div id="map"></div>
     <div id="observations"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var map = L.map('map').setView([37.8097, -122.4098], 15); // Center map between Pier 39 and Pier 38
+            var map = L.map('map').setView([40.7851, -73.9683], 16); // Center map around Central Park
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            var pier39 = L.marker([37.8085, -122.4098]).addTo(map); // Add marker for Pier 39
-            var pier38 = L.marker([37.8092, -122.4052]).addTo(map); // Add marker for Pier 38
+            var entryGate = L.marker([40.7679, -73.9734]).addTo(map); // Add marker for Central Park entry gate
+            var exitGate = L.marker([40.7803, -73.9652]).addTo(map); // Add marker for Central Park exit gate
 
             var latlngs = [
-                [37.8085, -122.4098], // Pier 39
-                [37.8092, -122.4052]  // Pier 38
+                [40.7679, -73.9734], // Central Park entry gate
+                [40.7803, -73.9652]  // Central Park exit gate
             ];
 
             var polyline = L.polyline(latlngs, {color: 'blue'}).addTo(map); // Add polyline for the route
@@ -83,11 +83,11 @@
                     });
             }
 
-            // Coordinates for bounding box around Pier 39 and Pier 38
-            var latitude1 = 37.8085; // North latitude (Pier 39)
-            var longitude1 = -122.4052; // East longitude (Pier 38)
-            var latitude2 = 37.8092; // South latitude (Pier 38)
-            var longitude2 = -122.4098; // West longitude (Pier 39)
+            // Coordinates for bounding box around Central Park entry gate and exit gate
+            var latitude1 = 40.7679; // North latitude (Central Park entry gate)
+            var longitude1 = -73.9734; // East longitude (Central Park entry gate)
+            var latitude2 = 40.7803; // South latitude (Central Park exit gate)
+            var longitude2 = -73.9652; // West longitude (Central Park exit gate)
 
             fetchObservations(latitude1, longitude1, latitude2, longitude2);
         });
