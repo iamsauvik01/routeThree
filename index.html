@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Route and Flora/Fauna between Delhi and Shimla</title>
+    <title>Route and Flora/Fauna between Pier 39 and Pier 38, San Francisco</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
@@ -20,25 +20,25 @@
     </style>
 </head>
 <body>
-    <h1>Route and Flora/Fauna between Delhi and Shimla</h1>
+    <h1>Route and Flora/Fauna between Pier 39 and Pier 38, San Francisco</h1>
     <div id="map"></div>
     <div id="observations"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var map = L.map('map').setView([30.7333, 76.7794], 8); // Center map between Delhi and Shimla
+            var map = L.map('map').setView([37.8097, -122.4098], 15); // Center map between Pier 39 and Pier 38
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            var delhi = L.marker([28.7041, 77.1025]).addTo(map); // Add marker for Delhi
-            var shimla = L.marker([31.1048, 77.1734]).addTo(map); // Add marker for Shimla
+            var pier39 = L.marker([37.8085, -122.4098]).addTo(map); // Add marker for Pier 39
+            var pier38 = L.marker([37.8092, -122.4052]).addTo(map); // Add marker for Pier 38
 
             var latlngs = [
-                [28.7041, 77.1025], // Delhi
-                [31.1048, 77.1734]  // Shimla
+                [37.8085, -122.4098], // Pier 39
+                [37.8092, -122.4052]  // Pier 38
             ];
 
             var polyline = L.polyline(latlngs, {color: 'blue'}).addTo(map); // Add polyline for the route
@@ -83,11 +83,11 @@
                     });
             }
 
-            // Coordinates for bounding box around Delhi and Shimla
-            var latitude1 = 31.1048; // North latitude (Shimla)
-            var longitude1 = 77.1025; // East longitude (Delhi)
-            var latitude2 = 28.7041; // South latitude (Delhi)
-            var longitude2 = 77.1734; // West longitude (Shimla)
+            // Coordinates for bounding box around Pier 39 and Pier 38
+            var latitude1 = 37.8085; // North latitude (Pier 39)
+            var longitude1 = -122.4052; // East longitude (Pier 38)
+            var latitude2 = 37.8092; // South latitude (Pier 38)
+            var longitude2 = -122.4098; // West longitude (Pier 39)
 
             fetchObservations(latitude1, longitude1, latitude2, longitude2);
         });
