@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route and Flora/Fauna between Delhi and Shimla</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 400px;
+        }
+        .observation {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Route and Flora/Fauna between Delhi and Shimla</h1>
+    <div id="map"></div>
+    <div id="observations"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var map = L.map('map').setView([30.7333, 76.7794], 8); // Center map between Delhi and Shimla
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var delhi = L.marker([28.7041, 77.1025]).addTo(map); // Add marker for Delhi
+            var shimla = L.marker([31.1048, 77.1734]).addTo(map); // Add marker for Shimla
+
+            var latlngs = [
+                [28.7041, 77.1025], // Delhi
+                [31.1048, 77.1734]  // Shimla
+            ];
+
+            var polyline = L.polyline(latlngs, {color: 'blue'}).addTo(map); // Add polyline for the route
+
+            // Zoom the map to the polyline
+            map.fitBounds(polyline.getBounds());
+
+            // Fetch flora and fauna observations from iNaturalist API
+            var observationsContainer = document.getElementById("observations");
+            var observationsEndpoint = 'https://api.inaturalist.org/v1/observations';
+
+            function fetchObservations(latitude1, longitude1, latitude2, longitude2) {
+                fetch(`${observationsEndpoint}?nelat=${latitude1}&nelng=${longitude1}&swlat=${latitude2}&swlng=${longitude2}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        observationsContainer.innerHTML = '';
+
+                        data.results.forEach(observation => {
+                            var observationDiv = document.createElement("div");
+                            observationDiv.classList.add("observation");
+
+                            var speciesName = observation.taxon && observation.taxon.name ? observation.taxon.name : 'Unknown';
+                            var observerName = observation.user ? observation.user.login : 'Unknown';
+                            var location = observation.place_guess || 'Unknown';
+                            var observationDate = observation.observed_on || 'Unknown';
+
+                            var image = observation.photos && observation.photos.length > 0 ? observation.photos[0].url : '';
+
+                            observationDiv.innerHTML = `
+                                <h2>${speciesName}</h2>
+                                ${image ? `<img src="${image}" alt="${speciesName}">` : ''}
+                                <p>Observer: ${observerName}</p>
+                                <p>Location: ${location}</p>
+                                <p>Date: ${observationDate}</p>
+                            `;
+
+                            observationsContainer.appendChild(observationDiv);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            }
+
+            // Coordinates for bounding box around Delhi and Shimla
+            var latitude1 = 31.1048; // North latitude (Shimla)
+            var longitude1 = 77.1025; // East longitude (Delhi)
+            var latitude2 = 28.7041; // South latitude (Delhi)
+            var longitude2 = 77.1734; // West longitude (Shimla)
+
+            fetchObservations(latitude1, longitude1, latitude2, longitude2);
+        });
+    </script>
+</body>
+</html>
